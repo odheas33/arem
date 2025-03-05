@@ -1418,48 +1418,26 @@ iframe {
 }
 
 @media (max-width: 47.999rem) {
-  .spollers-faq__item.active .spollers-faq__button img {
-    transform: translate(-10px, -10px) rotate(180deg);
+  .header__navigation {
+    position: static;
   }
 
-  .spollers-faq__button span {
-    padding-top: 15px;
-    padding-left: 10px;
-    padding-bottom: 15px;
-    font-weight: 600;
-    font-size: 14px;
+  .menu__body {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100%;
+    background-color: #93BA85;
+    padding: 80px 20px 30px 20px;
+    transition: all 0.3s ease;
+    overflow-y: auto;
+    z-index: 999;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
   }
 
-  .spollers-faq__button img {
-    padding-right: 10px;
-  }
-
-  .spollers-faq__inner {
-    font-size: 16px;
-    padding-left: 10px;
-    line-height: 130%;
-  }
-
-  .pricing__container {
-    text-align: center;
-    padding-top: 70px;
-    padding-bottom: 70px;
-  }
-
-  .pricing__row {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .item-pricing__button {
-    font-size: 17px;
-    padding: 15px 32px;
-  }
-
-  .reviews__container {
-    padding-top: 80px;
-    padding-bottom: 80px;
+  .menu-open .menu__body {
+    right: 0;
   }
 
   .icon-menu {
@@ -1471,21 +1449,26 @@ iframe {
     width: 1.875rem;
     height: 1.125rem;
     cursor: pointer;
-    z-index: 5;
+    z-index: 1000;
   }
 
-  .icon-menu span,
+  .icon-menu span {
+    position: absolute;
+    top: 9px;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-100);
+    transition: all 0.3s ease;
+  }
+
   .icon-menu::before,
   .icon-menu::after {
     content: "";
-    -webkit-transition: all 0.3s ease 0s;
-    -o-transition: all 0.3s ease 0s;
-    transition: all 0.3s ease 0s;
-    right: 0;
     position: absolute;
     width: 100%;
-    height: 0.125rem;
+    height: 2px;
     background-color: var(--text-100);
+    transition: all 0.3s ease;
   }
 
   .icon-menu::before {
@@ -1496,78 +1479,112 @@ iframe {
     bottom: 0;
   }
 
-  .contact__container {
-    flex-direction: column;
-    padding-top: 80px;
-    gap: 50px;
-    padding-bottom: 80px;
-  }
-
-  .icon-menu span {
-    top: calc(50% - 0.0625rem);
-  }
-
   .menu-open .icon-menu span {
-    width: 0;
+    transform: scale(0);
   }
 
   .menu-open .icon-menu::before {
-    top: calc(50% - 0.0625rem);
-    -webkit-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    transform: rotate(-45deg);
+    transform: rotate(45deg);
+    top: 9px;
   }
 
   .menu-open .icon-menu::after {
-    bottom: calc(50% - 0.0625rem);
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    transform: rotate(-45deg);
+    bottom: 9px;
   }
 
-  .menu__body {
-    background-color: #93BA85;
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    padding: 9.375rem 0.938rem 1.875rem 0.938rem;
-    overflow: auto;
+  .menu__list {
     flex-direction: column;
-    row-gap: 5rem;
-  }
-
-  .menu__body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    min-height: 5.75rem;
-    background-color: #93BA85;
-    border-bottom: 1px solid #000;
-    z-index: 2;
-  }
-
-  .menu-open .menu__body {
-    left: 0;
-  }
-
-  .menu-open .menu__body::before {
-    left: 0;
+    align-items: flex-start;
   }
 
   .menu__item {
-    text-align: center;
+    margin: 0;
+    width: 100%;
   }
 
   .menu__item:not(:last-child) {
-    margin-bottom: 1.563rem;
+    margin-bottom: 20px;
   }
 
   .menu__link {
-    font-size: 2rem;
+    font-size: 18px;
+    display: block;
+    padding: 10px 0;
+    color: #ffffff;
+  }
+
+  .menu__item-dropdown {
+    position: relative;
+  }
+
+  .menu__item-dropdown > .menu__link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .menu__item-dropdown > .menu__link::after {
+    content: '▼';
+    font-size: 12px;
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+  }
+
+  .menu__item-dropdown.active > .menu__link::after {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    position: static;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+    border-radius: 8px;
+    padding: 0;
+    margin-top: 5px;
+    display: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .menu__item-dropdown.active .dropdown-menu {
+    display: block;
+    padding: 10px 0;
+  }
+
+  .dropdown-menu li {
+    padding: 0;
+  }
+
+  .dropdown-menu li a {
+    font-size: 16px;
+    color: #ffffff;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  .dropdown-menu li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dropdown-menu li:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Menü açıkken arka plan overlay */
+  .menu-open::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.3s ease;
   }
 
   .actions-header__button {
@@ -1732,11 +1749,21 @@ iframe {
 /* Mobil cihazlar için performans optimizasyonu */
 @media (max-width: 768px) {
   .main__background-video {
-    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
   }
   
   .main {
-    background: url("../img/home/background_placeholder.png") center / cover no-repeat;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 7.5rem 0;
   }
 }
 
@@ -1779,5 +1806,40 @@ iframe {
   .instagram-feed {
     padding: 1rem;
     max-width: 100%;
+  }
+}
+
+/* Sabit WhatsApp Butonu */
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25D366;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: none; /* Varsayılan olarak gizli, mobilde gösterilecek */
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.whatsapp-float img {
+  width: 35px;
+  height: 35px;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  background-color: #128C7E;
+}
+
+@media (max-width: 768px) {
+  .whatsapp-float {
+    display: flex;
   }
 }

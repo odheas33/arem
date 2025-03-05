@@ -34,38 +34,21 @@ spollerButtons.forEach((button) => {
   });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  const wrapper = document.querySelector('.testimonials__wrapper');
-  const prevButton = document.querySelector('.testimonials__prev');
-  const nextButton = document.querySelector('.testimonials__next');
-  const items = document.querySelectorAll('.testimonial__item');
-  
-  let currentIndex = 0;
-  const itemWidth = items[0].offsetWidth + 32; // 32px gap
-  const itemsPerView = window.innerWidth > 768 ? 3 : 1;
-  const maxIndex = items.length - itemsPerView;
-
-  function updateSlider() {
-    wrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+// Menü dışına tıklandığında menüyü kapat
+document.addEventListener('click', function(e) {
+  if (document.body.classList.contains('menu-open')) {
+    // Eğer tıklanan yer menü içi veya menü ikonu değilse menüyü kapat
+    if (!e.target.closest('.menu__body') && !e.target.closest('.icon-menu')) {
+      document.body.classList.remove('menu-open');
+      // Tüm açık dropdown'ları kapat
+      document.querySelectorAll('.menu__item-dropdown.active').forEach(item => {
+        item.classList.remove('active');
+      });
+    }
   }
-
-  prevButton.addEventListener('click', () => {
-    currentIndex = Math.max(currentIndex - 1, 0);
-    updateSlider();
-  });
-
-  nextButton.addEventListener('click', () => {
-    currentIndex = Math.min(currentIndex + 1, maxIndex);
-    updateSlider();
-  });
-
-  // Otomatik kaydırma
-  setInterval(() => {
-    currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
-    updateSlider();
-  }, 5000);
 });
 
+// Mobil menüde dropdown için
 document.querySelectorAll('.menu__item-dropdown').forEach(item => {
   item.addEventListener('click', function(e) {
     if (window.innerWidth <= 768) {
@@ -73,6 +56,66 @@ document.querySelectorAll('.menu__item-dropdown').forEach(item => {
       this.classList.toggle('active');
     }
   });
+});
+
+// Dropdown menü içindeki linklere tıklanınca
+document.querySelectorAll('.dropdown-menu a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.stopPropagation(); // Dropdown toggle'ı engellemek için
+    
+    // Menüyü kapat
+    document.body.classList.remove('menu-open');
+    
+    // Eğer aynı sayfadaysa smooth scroll yap
+    if (this.getAttribute('href').includes('services.html')) {
+      const targetId = this.getAttribute('href').split('#')[1];
+      if (window.location.pathname.includes('services.html')) {
+        e.preventDefault();
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }
+    }
+  });
+});
+
+// Testimonials slider
+document.addEventListener('DOMContentLoaded', function() {
+  const wrapper = document.querySelector('.testimonials__wrapper');
+  const prevButton = document.querySelector('.testimonials__prev');
+  const nextButton = document.querySelector('.testimonials__next');
+  const items = document.querySelectorAll('.testimonial__item');
+  
+  if (wrapper && prevButton && nextButton && items.length > 0) {
+    let currentIndex = 0;
+    const itemWidth = items[0].offsetWidth + 32;
+    const itemsPerView = window.innerWidth > 768 ? 3 : 1;
+    const maxIndex = items.length - itemsPerView;
+
+    function updateSlider() {
+      wrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    }
+
+    prevButton.addEventListener('click', () => {
+      currentIndex = Math.max(currentIndex - 1, 0);
+      updateSlider();
+    });
+
+    nextButton.addEventListener('click', () => {
+      currentIndex = Math.min(currentIndex + 1, maxIndex);
+      updateSlider();
+    });
+
+    // Otomatik kaydırma
+    setInterval(() => {
+      currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+      updateSlider();
+    }, 5000);
+  }
 });
 
 // Smooth scroll için
